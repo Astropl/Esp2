@@ -16,7 +16,8 @@ string dni[] = {
 string miesiace[] = {
     "enero", "febrero", "marzo", "abril", "mayo", "junio",
     "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"
-};
+};//miesiace
+
 
 string liczby[] = {
     "", "uno", "dos", "tres", "cuatro", "cinco", "seis",
