@@ -36,42 +36,28 @@ Esp2::Esp2(QWidget *parent)
     , ui(new Ui::Esp2)
 {
     ui->setupUi(this);
-    getDateText();
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->addWidget(ui->labelDate);
+    ui->centralwidget->setLayout(layout);
     settinggs();
+    getDateText();
+
 }
 
 void Esp2::settinggs()
 {
 
-    //ui->labelDate->setFixedSize(320,120);
+
     this->setWindowTitle("Hoy");
+
     ui->labelDate->setWordWrap(true);
     ui->labelDate->setStyleSheet("font-size: 16px; font-weight: bold;");
-    ui->labelDate->setFixedWidth(450);
-
-    //this->setFixedSize(320,120);
-
-    //this->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint);
-    //this->setAttribute(Qt::WA_TranslucentBackground); //Przezroczytse tło
-    //ui->labelDate->setAlignment(Qt::AlignCenter);
-
+    ui->labelDate->setAlignment(Qt::AlignCenter);
+    ui->labelDate->setFixedWidth(300);
     //ui->labelDate->adjustSize();
-    // ui->labelDate->setAlignment(Qt::AlignCenter);
-    // ui->labelDate->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-
-
-    //this->setFixedSize(320,120);
-    //ui->labelDate->setAlignment(Qt::AlignCenter);
     //this->adjustSize();
-    //this->setWindowFlags(Qt::Tool |
-    //                   Qt::FramelessWindowHint |
-    //                   Qt::WindowStaysOnTopHint);
 
-    //     this->setStyleSheet(R"(
-    //     background-color: #1f1f1f;
-    //     color: white;
-    //     border-radius: 12px;
-    // )");
+
 }
 
 
@@ -91,12 +77,12 @@ void Esp2::getDateText()
     //tekst += std::to_string(dzien) + " de ";
     tekst += liczby[dzien] + " de ";
     tekst += miesiace[miesiac] + " de ";
-    //tekst += std::to_string(rok);// dodac
+
     tekst += rokNaHiszpanski(rok);
 
-
-    //QMessageBox::information(this, "Fecha", QString::fromStdString(tekst));
     ui->labelDate->setText(QString::fromStdString(tekst));
+    ui->labelDate->adjustSize();
+    this->adjustSize();
 
 }
 
