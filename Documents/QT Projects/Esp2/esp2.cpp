@@ -5,12 +5,13 @@
 #include <string>
 #include <ctime>
 #include <QMessageBox>
+#include <QDate>
 
 using namespace std;
 
 string dni[] = {
-    "domingo", "lunes", "martes", "miércoles",
-    "jueves", "viernes", "sábado"
+    "lunes", "martes", "miércoles",
+    "jueves", "viernes", "sábado", "domingo"
 };
 
 string miesiace[] = {
@@ -38,7 +39,16 @@ Esp2::Esp2(QWidget *parent)
     ui->setupUi(this);
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(ui->labelDate);
+    layout->addWidget(ui->btnExit);
+    layout->addWidget(ui->lblYesterday);
+    layout->addWidget(ui->lblTomorrow);
+
+    layout->setAlignment(ui->btnExit, Qt::AlignCenter);
     ui->centralwidget->setLayout(layout);
+
+    layout->setSpacing(12);
+    layout->setContentsMargins(10, 10, 10, 10);
+
     settinggs();
     getDateText();
 
@@ -54,8 +64,14 @@ void Esp2::settinggs()
     ui->labelDate->setStyleSheet("font-size: 16px; font-weight: bold;");
     ui->labelDate->setAlignment(Qt::AlignCenter);
     ui->labelDate->setFixedWidth(300);
+
+    ui->btnExit->setText("Wyjście");
+    ui->btnExit->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     //ui->labelDate->adjustSize();
     //this->adjustSize();
+    ui->lblYesterday->setStyleSheet("color: #2E86C1;");
+    ui->labelDate->setStyleSheet("font-weight: bold; font-size: 18px;");
+    ui->lblTomorrow->setStyleSheet("color: #555555; font-style: italic;");
 
 
 }
@@ -64,25 +80,29 @@ void Esp2::settinggs()
 void Esp2::getDateText()
 
 {
-    time_t t = time(nullptr);
-    tm* now = localtime(&t);
 
-    int dzien_tyg = now->tm_wday;   // 0-6 (niedziela = 0)
-    int dzien = now->tm_mday;       // 1-31
-    int miesiac = now->tm_mon;      // 0-11
-    int rok = now->tm_year + 1900;
+    QDate today = QDate::currentDate();
+    QDate yesterday = today.addDays(-1);
+    QDate tomorrow = today.addDays(1);
 
-    string tekst = "Hoy es ";
-    tekst += dni[dzien_tyg] + ", ";
-    //tekst += std::to_string(dzien) + " de ";
-    tekst += liczby[dzien] + " de ";
-    tekst += miesiace[miesiac] + " de ";
+    auto buildText = [&](QDate d) -> QString {
 
-    tekst += rokNaHiszpanski(rok);
+        int dzien_tyg = d.dayOfWeek() - 1; // 0–6
+        int dzien = d.day();
+        int miesiac = d.month() - 1;
+        int rok = d.year();
 
-    ui->labelDate->setText(QString::fromStdString(tekst));
-    ui->labelDate->adjustSize();
-    this->adjustSize();
+        string tekst = dni[dzien_tyg] + ", ";
+        tekst += liczby[dzien] + " de ";
+        tekst += miesiace[miesiac] + " de ";
+        tekst += rokNaHiszpanski(rok)+ ".";
+
+        return QString::fromStdString(tekst);
+    };
+
+    ui->lblYesterday->setText("Ayer es " + buildText(yesterday));
+    ui->labelDate->setText("Hoy es " + buildText(today));
+    ui->lblTomorrow->setText("Mañana es " + buildText(tomorrow));
 
 }
 
@@ -109,7 +129,7 @@ string Esp2::rokNaHiszpanski(int rok)
         }
         else
         {
-            int dzies = reszta / 10;
+            //int dzies = reszta / 10;
             int jedn = reszta % 10;
 
             if (reszta < 40) wynik += "treinta";
@@ -127,3 +147,9 @@ string Esp2::rokNaHiszpanski(int rok)
 
     return wynik;
 }
+
+void Esp2::on_btnExit_clicked()
+{
+    qApp->quit();
+}
+

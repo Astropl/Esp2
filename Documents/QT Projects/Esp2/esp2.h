@@ -23,6 +23,9 @@ public:
     void settinggs();
 
     string rokNaHiszpanski(int rok);
+private slots:
+    void on_btnExit_clicked();
+
 private:
     Ui::Esp2 *ui;
 };
