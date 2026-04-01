@@ -69,10 +69,11 @@ void Esp2::settinggs()
     ui->btnExit->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     //ui->labelDate->adjustSize();
     //this->adjustSize();
-    ui->lblYesterday->setStyleSheet("color: #2E86C1;");
+    ui->lblYesterday->setStyleSheet("color: #2E86C1;font-style: italic; font-weight: bold; font-size: 18px;");
     ui->labelDate->setStyleSheet("font-weight: bold; font-size: 18px;");
-    ui->lblTomorrow->setStyleSheet("color: #555555; font-style: italic;");
-
+    ui->lblTomorrow->setStyleSheet("color: #555555; font-style: italic; font-weight: bold; font-size: 18px;");
+    this->setWindowFlags(this->windowFlags() | Qt::WindowStaysOnTopHint);
+    this->show();
 
 }
 
@@ -92,12 +93,14 @@ void Esp2::getDateText()
         int miesiac = d.month() - 1;
         int rok = d.year();
 
-        string tekst = dni[dzien_tyg] + ", ";
-        tekst += liczby[dzien] + " de ";
-        tekst += miesiace[miesiac] + " de ";
-        tekst += rokNaHiszpanski(rok)+ ".";
+        QString dzienTyg = QString::fromStdString(dni[dzien_tyg]);
 
-        return QString::fromStdString(tekst);
+        QString tekst = "<span style='color:#e74c3c; font-weight:bold;'>" + dzienTyg + "</span>, ";
+        tekst += QString::fromStdString(liczby[dzien]) + " de ";
+        tekst += QString::fromStdString(miesiace[miesiac]) + " de ";
+        tekst += QString::fromStdString(rokNaHiszpanski(rok))+".";
+
+        return tekst;
     };
 
     ui->lblYesterday->setText("Ayer es " + buildText(yesterday));
