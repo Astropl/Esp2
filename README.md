@@ -1,2 +1,3 @@
 # Esp2
 
+Apka w C++ do wyswietlania dni po hiszpańsku, Dzisiaj jest niedziela 4 kwietnia itd...
